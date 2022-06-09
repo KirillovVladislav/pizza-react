@@ -61,7 +61,7 @@ export function Header() {
           </svg>
         </div>
         <div className='header__cart'>
-          <a className='button button--cart' href='/cart'>
+          <Link className='button button--cart' to='cart'>
             <span>0 ₽</span>
             <div className='button__delimiter'></div>
             <svg
@@ -94,7 +94,7 @@ export function Header() {
               ></path>
             </svg>
             <span>0</span>
-          </a>
+          </Link>
         </div>
       </div>
     </div>

@@ -16,16 +16,16 @@ export function Home() {
         "https://629b292ecf163ceb8d15202c.mockapi.io/items"
       )
       let result = await response.json()
-      setTimeout(() => {
-        setPizzas(result)
-        setIsLoading(false)
-      }, 3000)
+
+      setPizzas(result)
+      setIsLoading(false)
     }
 
     fetchData()
+    window.scrollTo(0, 0)
   }, [])
   return (
-    <>
+    <div className='container'>
       <div className='content__top'>
         <Categories />
         <Sort />
@@ -45,6 +45,6 @@ export function Home() {
               />
             ))}
       </div>
-    </>
+    </div>
   )
 }
