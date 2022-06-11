@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 
 import logoSvg from "../assets/img/pizza-logo.svg"
+import { Search } from "./Search"
 
 export function Header() {
   return (
@@ -15,7 +16,7 @@ export function Header() {
             </div>
           </div>
         </Link>
-
+        <Search />
         <div className='Search_root__eiX89'>
           <svg
             className='Search_icon__XMmYc'
