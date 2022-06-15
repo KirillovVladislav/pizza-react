@@ -1,6 +1,11 @@
 import React, { useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { setSort } from "../redux/slices/filterSlice"
 
-export function Sort({ sortValue, onChangeSort }) {
+export function Sort() {
+  const dispatch = useDispatch()
+  const sortValue = useSelector((state) => state.filterSlice.sort)
+
   const [visiblePopup, setVisiblePopup] = useState(false)
 
   const sortList = [
@@ -16,8 +21,8 @@ export function Sort({ sortValue, onChangeSort }) {
     setVisiblePopup(!visiblePopup)
   }
 
-  const onClickListItem = (i) => {
-    onChangeSort(i)
+  const onClickListItem = (obj) => {
+    dispatch(setSort(obj))
     setVisiblePopup(false)
   }
 
