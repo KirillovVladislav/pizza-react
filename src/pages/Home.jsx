@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import axios from "axios"
 
-import { setCategoryId } from "../redux/slices/filterSlice"
+import { setCategoryId, setCurrentPage } from "../redux/slices/filterSlice"
 import { Skeleton } from "../components/PizzaBlock/Skeleton"
 import { PizzaBlock } from "../components/PizzaBlock"
 import { Categories } from "../components/Categories"
@@ -11,45 +12,51 @@ import { SearchContext } from "../App"
 
 export function Home() {
   const dispatch = useDispatch()
-  const { categoryId, sort } = useSelector((state) => state.filterSlice)
 
-  const onChangeCategory = (id) => {
-    dispatch(setCategoryId(id))
-  }
+  const { categoryId, sort, currentPage } = useSelector(
+    (state) => state.filterSlice
+  )
 
   const { searchValue } = useContext(SearchContext)
   const [pizzas, setPizzas] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
-  const [currentPage, setCurrentPage] = useState(1)
+  const onChangeCategory = (id) => {
+    dispatch(setCategoryId(id))
+  }
 
-  useEffect(() => {
+  const fetchData = async () => {
+    setIsLoading(true)
+
     const search = searchValue ? `&search=${searchValue}` : ""
 
-    const fetchData = async () => {
-      setIsLoading(true)
-      let response = await fetch(
-        `https://629b292ecf163ceb8d15202c.mockapi.io/items?page=${currentPage}&limit=4&${
-          categoryId > 0 ? `category=${categoryId}` : ""
-        }&sortBy=${sort.sortProperty.replace("-", "")}&order=${
-          sort.sortProperty.includes("-") ? "ask" : "desc"
-        }${search}`
-      )
-      let result = await response.json()
+    let response = await axios.get(
+      `https://629b292ecf163ceb8d15202c.mockapi.io/items?page=${currentPage}&limit=4&${
+        categoryId > 0 ? `category=${categoryId}` : ""
+      }&sortBy=${sort.sortProperty.replace("-", "")}&order=${
+        sort.sortProperty.includes("-") ? "ask" : "desc"
+      }${search}`
+    )
+    let result = response.data
 
-      setPizzas(result)
-      setIsLoading(false)
-    }
+    setPizzas(result)
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    window.scrollTo(0, 0)
 
     fetchData()
-    window.scrollTo(0, 0)
   }, [categoryId, searchValue, currentPage, sort.sortProperty])
 
   const SkeletonItem = [...new Array(6)].map((_, index) => (
     <Skeleton key={index} />
   ))
 
-  console.log(pizzas)
+  const onChangePage = (number) => {
+    dispatch(setCurrentPage(number))
+  }
+
   const pizzasItems = pizzas.map((pizza) => (
     <PizzaBlock
       key={pizza.id}
@@ -74,7 +81,7 @@ export function Home() {
       <div className='content__items'>
         {isLoading ? SkeletonItem : pizzasItems}
       </div>
-      <Pagination onChangePage={(number) => setCurrentPage(number)} />
+      <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   )
 }
