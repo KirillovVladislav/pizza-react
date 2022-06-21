@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 
 export function Categories({ categoriesValue, onClickCategory }) {
   const categories = [
@@ -8,7 +8,7 @@ export function Categories({ categoriesValue, onClickCategory }) {
     "Гриль",
     "Острые",
     "Закрытые",
-  ]
+  ];
 
   return (
     <div className='categories'>
@@ -22,9 +22,9 @@ export function Categories({ categoriesValue, onClickCategory }) {
             >
               {categoryName}
             </li>
-          )
+          );
         })}
       </ul>
     </div>
-  )
+  );
 }

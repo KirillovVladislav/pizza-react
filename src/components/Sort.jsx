@@ -1,14 +1,14 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect } from "react";
 
-import { useSelector, useDispatch } from "react-redux"
-import { setSort } from "../redux/slices/filterSlice"
+import { useSelector, useDispatch } from "react-redux";
+import { setSort } from "../redux/slices/filterSlice";
 
 export function Sort() {
-  const dispatch = useDispatch()
-  const sortValue = useSelector((state) => state.filterSlice.sort)
-  const sortRef = useRef()
+  const dispatch = useDispatch();
+  const sortValue = useSelector((state) => state.filterSlice.sort);
+  const sortRef = useRef();
 
-  const [visiblePopup, setVisiblePopup] = useState(false)
+  const [visiblePopup, setVisiblePopup] = useState(false);
 
   const sortList = [
     { name: "популярности(DESC)", sortProperty: "rating" },
@@ -17,28 +17,28 @@ export function Sort() {
     { name: "цене(ASK)", sortProperty: "-price" },
     { name: "алфавиту(DESC)", sortProperty: "title" },
     { name: "алфавиту(ASK)", sortProperty: "-title" },
-  ]
+  ];
 
   const onClickVisible = () => {
-    setVisiblePopup(!visiblePopup)
-  }
+    setVisiblePopup(!visiblePopup);
+  };
 
   const onClickListItem = (obj) => {
-    dispatch(setSort(obj))
-    setVisiblePopup(false)
-  }
+    dispatch(setSort(obj));
+    setVisiblePopup(false);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.path.includes(sortRef.current)) {
-        setVisiblePopup(false)
+        setVisiblePopup(false);
       }
-    }
+    };
 
-    document.body.addEventListener("click", handleClickOutside)
+    document.body.addEventListener("click", handleClickOutside);
 
-    return () => document.body.removeEventListener("click", handleClickOutside)
-  }, [])
+    return () => document.body.removeEventListener("click", handleClickOutside);
+  }, []);
 
   return (
     <div className='sort' ref={sortRef}>
@@ -76,5 +76,5 @@ export function Sort() {
         )}
       </div>
     </div>
-  )
+  );
 }

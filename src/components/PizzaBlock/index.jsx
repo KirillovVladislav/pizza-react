@@ -1,17 +1,38 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem } from "../../redux/slices/cartSlice";
 
-export function PizzaBlock({ title, price, imageUrl, sizes, types }) {
-  const [activeType, setAtiveType] = useState(0)
-  const [activeSize, setAtiveSize] = useState(0)
-  const typeNames = ["тонкое", "традиционное"]
+const typeNames = ["тонкое", "традиционное"];
+
+export function PizzaBlock({ title, price, imageUrl, sizes, types, id }) {
+  const dispatch = useDispatch();
+  const [activeType, setAtiveType] = useState(0);
+  const [activeSize, setAtiveSize] = useState(0);
+  const cartItem = useSelector((state) =>
+    state.cartSlice.items.find((obj) => obj.id === id)
+  );
+
+  const addedCount = cartItem ? cartItem.count : 0;
 
   const onClickTypes = (typeId) => {
-    setAtiveType(typeId)
-  }
+    setAtiveType(typeId);
+  };
 
   const onClickSize = (index) => {
-    setAtiveSize(index)
-  }
+    setAtiveSize(index);
+  };
+
+  const onClickAdd = () => {
+    const item = {
+      id,
+      title,
+      price,
+      imageUrl,
+      type: typeNames[activeType],
+      size: activeSize,
+    };
+    dispatch(addItem(item));
+  };
 
   return (
     <div className='pizza-block-wrapper'>
@@ -46,7 +67,10 @@ export function PizzaBlock({ title, price, imageUrl, sizes, types }) {
         </div>
         <div className='pizza-block__bottom'>
           <div className='pizza-block__price'>{price}₽</div>
-          <button className='button button--outline button--add'>
+          <button
+            onClick={onClickAdd}
+            className='button button--outline button--add'
+          >
             <svg
               width='12'
               height='12'
@@ -59,10 +83,11 @@ export function PizzaBlock({ title, price, imageUrl, sizes, types }) {
                 fill='white'
               ></path>
             </svg>
-            <span>Добавить 0</span>
+            <span>Добавить </span>
+            {addedCount > 0 && <i>{addedCount}</i>}
           </button>
         </div>
       </div>
     </div>
-  )
+  );
 }
