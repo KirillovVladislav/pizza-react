@@ -7,7 +7,7 @@ import { PizzaBlock } from "../components/PizzaBlock";
 import { Categories } from "../components/Categories";
 import { Sort } from "../components/Sort";
 import { Pagination } from "../components/Pagination";
-
+import { Link } from "react-router-dom";
 import { fetchPizzas, selectPizza } from "../redux/slices/pizzaSlice";
 
 export function Home() {
@@ -53,15 +53,16 @@ export function Home() {
   ));
 
   const pizzasItems = items.map((pizza) => (
-    <PizzaBlock
-      key={pizza.id}
-      title={pizza.title}
-      price={pizza.price}
-      imageUrl={pizza.imageUrl}
-      sizes={pizza.sizes}
-      types={pizza.types}
-      id={pizza.id}
-    />
+    <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
+      <PizzaBlock
+        title={pizza.title}
+        price={pizza.price}
+        imageUrl={pizza.imageUrl}
+        sizes={pizza.sizes}
+        types={pizza.types}
+        id={pizza.id}
+      />
+    </Link>
   ));
   console.log(status);
   return (
