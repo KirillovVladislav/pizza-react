@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 export const CartItem = ({ id, title, price, type, count, imageUrl }) => {
   const dispatch = useDispatch();
-  console.log(id);
+
   const onClickPlus = () => {
     dispatch(
       addItem({
@@ -20,6 +20,7 @@ export const CartItem = ({ id, title, price, type, count, imageUrl }) => {
   const onClickRemove = () => {
     dispatch(removeItem(id));
   };
+
   return (
     <div className='cart__item'>
       <div className='cart__item-img'>

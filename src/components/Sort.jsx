@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
-import { setSort } from "../redux/slices/filterSlice";
+import { selectSort, setSort } from "../redux/slices/filterSlice";
 
 export function Sort() {
   const dispatch = useDispatch();
-  const sortValue = useSelector((state) => state.filterSlice.sort);
+  const sortValue = useSelector(selectSort);
   const sortRef = useRef();
 
   const [visiblePopup, setVisiblePopup] = useState(false);

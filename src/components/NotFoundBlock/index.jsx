@@ -1,6 +1,6 @@
-import React from "react"
+import React from "react";
 
-import styles from "./NotFoundBLock.module.scss"
+import styles from "./NotFoundBLock.module.scss";
 
 export const NotFoundBLock = () => {
   return (
@@ -12,5 +12,5 @@ export const NotFoundBLock = () => {
       </h1>
       <p className={styles.description}> К сожалению страница не найдена</p>
     </div>
-  )
-}
+  );
+};
