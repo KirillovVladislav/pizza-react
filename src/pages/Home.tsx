@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { setCategoryId, setCurrentPage } from "../redux/slices/filterSlice";
 import { Skeleton } from "../components/PizzaBlock/Skeleton";
@@ -7,23 +7,23 @@ import { PizzaBlock } from "../components/PizzaBlock";
 import { Categories } from "../components/Categories";
 import { Sort } from "../components/Sort";
 import { Pagination } from "../components/Pagination";
-import { Link } from "react-router-dom";
-import { fetchPizzas, selectPizza } from "../redux/slices/pizzaSlice";
+import { fetchPizzas, selectPizza, Status } from "../redux/slices/pizzaSlice";
+import { useAppDispatch } from "../redux/store";
 
 export function Home() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { categoryId, sort, currentPage, searchValue } = useSelector(
     (state) => state.filter
   );
   const { items, status } = useSelector(selectPizza);
 
-  const onChangeCategory = (id) => {
+  const onChangeCategory = (id: number) => {
     dispatch(setCategoryId(id));
   };
 
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number));
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page));
   };
 
   const getPizzas = async () => {
@@ -46,6 +46,7 @@ export function Home() {
   useEffect(() => {
     window.scrollTo(0, 0);
     getPizzas();
+    // eslint-disable-next-line
   }, [categoryId, searchValue, currentPage, sort.sortProperty]);
 
   const SkeletonItem = [...new Array(6)].map((_, index) => (
@@ -53,30 +54,28 @@ export function Home() {
   ));
 
   const pizzasItems = items.map((pizza) => (
-    <Link key={pizza.id} to={`/pizza/${pizza.id}`}>
-      <PizzaBlock
-        title={pizza.title}
-        price={pizza.price}
-        imageUrl={pizza.imageUrl}
-        sizes={pizza.sizes}
-        types={pizza.types}
-        id={pizza.id}
-      />
-    </Link>
+    <PizzaBlock
+      title={pizza.title}
+      price={pizza.price}
+      imageUrl={pizza.imageUrl}
+      sizes={pizza.sizes}
+      types={pizza.types}
+      id={pizza.id}
+    />
   ));
   console.log(status);
   return (
     <div className='container'>
       <div className='content__top'>
         <Categories
-          CategoriesValue={categoryId}
+          categoriesValue={categoryId}
           onClickCategory={onChangeCategory}
         />
         <Sort />
       </div>
       <h2 className='content__title'>Все пиццы</h2>
       <div className='content__items'>
-        {status === "laoding" ? SkeletonItem : pizzasItems}
+        {status === Status.LOADING ? SkeletonItem : pizzasItems}
       </div>
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>

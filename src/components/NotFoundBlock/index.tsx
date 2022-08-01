@@ -1,8 +1,6 @@
-import React from "react";
-
 import styles from "./NotFoundBLock.module.scss";
 
-export const NotFoundBLock = () => {
+export const NotFoundBLock: React.FC = () => {
   return (
     <div className={styles.root}>
       <h1>

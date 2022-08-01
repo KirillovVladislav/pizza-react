@@ -112,7 +112,6 @@ export const Cart = () => {
             <Link
               to='/'
               className='button button--outline button--add go-back-btn'
-              href='/'
             >
               <svg
                 width='8'

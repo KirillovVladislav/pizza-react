@@ -1,27 +1,40 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, selectCartItemById } from "../../redux/slices/cartSlice";
+import { Link } from "react-router-dom";
+import {
+  addItem,
+  TCartItem,
+  selectCartItemById,
+} from "../../redux/slices/cartSlice";
 
 const typeNames = ["тонкое", "традиционное"];
 
-export function PizzaBlock({ title, price, imageUrl, sizes, types, id }) {
+type PizzaBlockProps = {
+  title: string;
+  price: number;
+  imageUrl: string;
+  sizes: number[];
+  types: number[];
+  id: string;
+};
+
+export const PizzaBlock: React.FC<PizzaBlockProps> = ({
+  title,
+  price,
+  imageUrl,
+  sizes,
+  types,
+  id,
+}) => {
   const dispatch = useDispatch();
-  const [activeType, setAtiveType] = useState(0);
-  const [activeSize, setAtiveSize] = useState(0);
+  const [activeType, setActiveType] = useState(0);
+  const [activeSize, setActiveSize] = useState(0);
   const cartItem = useSelector(selectCartItemById(id));
 
   const addedCount = cartItem ? cartItem.count : 0;
 
-  const onClickTypes = (typeId) => {
-    setAtiveType(typeId);
-  };
-
-  const onClickSize = (index) => {
-    setAtiveSize(index);
-  };
-
   const onClickAdd = () => {
-    const item = {
+    const item: TCartItem = {
       id,
       title,
       price,
@@ -35,16 +48,17 @@ export function PizzaBlock({ title, price, imageUrl, sizes, types, id }) {
   return (
     <div className='pizza-block-wrapper'>
       <div className='pizza-block'>
-        <a href='/pizza/6'>
+        <Link key={id} to={`pizza/${id}`}>
           <img className='pizza-block__image' src={imageUrl} alt='Pizza' />
           <h4 className='pizza-block__title'>{title}</h4>
-        </a>
+        </Link>
+
         <div className='pizza-block__selector'>
           <ul>
             {types.map((typeId) => (
               <li
                 key={typeId}
-                onClick={() => onClickTypes(typeId)}
+                onClick={() => setActiveType(typeId)}
                 className={activeType === typeId ? "active" : ""}
               >
                 {typeNames[typeId]}
@@ -56,7 +70,7 @@ export function PizzaBlock({ title, price, imageUrl, sizes, types, id }) {
               <li
                 key={index}
                 className={activeSize === index ? "active" : ""}
-                onClick={() => onClickSize(index)}
+                onClick={() => setActiveSize(index)}
               >
                 {size} см.
               </li>
@@ -82,10 +96,13 @@ export function PizzaBlock({ title, price, imageUrl, sizes, types, id }) {
               ></path>
             </svg>
             <span>Добавить </span>
-            {addedCount > 0 && <i>{addedCount}</i>}
+
+            {addedCount !== undefined
+              ? addedCount > 0 && <i>{addedCount}</i>
+              : ""}
           </button>
         </div>
       </div>
     </div>
   );
-}
+};

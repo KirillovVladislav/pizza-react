@@ -1,5 +1,3 @@
-import React from "react";
-
 import { Home } from "./pages/Home";
 import { NotFound } from "./pages/NotFound";
 import { Cart } from "./pages/Cart";
