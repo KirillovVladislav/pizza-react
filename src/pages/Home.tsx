@@ -1,26 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 
-import { setCategoryId, setCurrentPage } from "../redux/slices/filterSlice";
+import { setCategoryId, setCurrentPage } from "../redux/filter/filterSlice";
+
 import { Skeleton } from "../components/PizzaBlock/Skeleton";
 import { PizzaBlock } from "../components/PizzaBlock";
 import { Categories } from "../components/Categories";
 import { Sort } from "../components/Sort";
 import { Pagination } from "../components/Pagination";
-import { fetchPizzas, selectPizza, Status } from "../redux/slices/pizzaSlice";
+import { fetchPizzas } from "../redux/pizza/pizzaSlice";
+import { Status } from "../redux/pizza/types";
+import { selectPizza } from "../redux/pizza/selectors";
 import { useAppDispatch } from "../redux/store";
+import { selectFilter } from "../redux/filter/selectors";
 
 export function Home() {
   const dispatch = useAppDispatch();
 
-  const { categoryId, sort, currentPage, searchValue } = useSelector(
-    (state) => state.filter
-  );
+  const { categoryId, sort, currentPage, searchValue } =
+    useSelector(selectFilter);
   const { items, status } = useSelector(selectPizza);
 
-  const onChangeCategory = (id: number) => {
+  const onChangeCategory = useCallback((id: number) => {
     dispatch(setCategoryId(id));
-  };
+  }, []);
 
   const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
@@ -71,7 +74,7 @@ export function Home() {
           categoriesValue={categoryId}
           onClickCategory={onChangeCategory}
         />
-        <Sort />
+        <Sort value={sort} />
       </div>
       <h2 className='content__title'>Все пиццы</h2>
       <div className='content__items'>
