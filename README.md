@@ -1,6 +1,6 @@
 🚀🚀🚀  React-Pizza  🚀🚀🚀
 
-Link [https://kirillovvladislav.github.io/](https://kirillovvladislav.github.io/)
+Link [https://kirillovvladislav.github.io/pizza-react/](https://kirillovvladislav.github.io/pizza-react/)
 
 __Tecnologias__
  * React
